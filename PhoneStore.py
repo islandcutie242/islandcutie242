@@ -1,6 +1,9 @@
+import csv
 class Phone:
     all = []
     def __init__(self, type, model, memory):
+        # validation 
+        assert memory >=0, f"Memory {memory} must be greater than 0"
         self.type = type
         self.model = model
         self.memory = memory
@@ -17,12 +20,34 @@ class Phone:
     def __repr__(self):
         return f"Phone('{self.type}','{self.model}','{self.memory}')"
 
+    @classmethod
+    def instantiate_from_csv(cls):
+        with open('CellStore.csv', 'r') as f:
+            reader = csv.DictReader(f)
+            Phones = list(reader)
 
-p1 = Phone("Iphone","11x", 64)
-p2 = Phone("Samsung", "Galaxy 20", 128)
-p3 = Phone("Acatel", "SG10", 34)
-p4 = Phone("Huwhei", "15", 64)
-p5 = Phone("Samsung", "Galaxy 11", 128)
+        for device in Phones:
+            Phone(
+                type=device.get('type'),
+                model=device.get('model'),
+                memory=int(device.get('memory')),
+            )
+
+    @staticmethod
+    def is_integer(num):
+        # we will count out the floats that are point zero
+        # i.e 5.0, 6.0 etc
+        if isinstance(num, float):
+            # count out the floats that are point zero
+            return num.is_integer()
+        elif isinstance(num, int):
+            return True
+        else:
+            return False
 
 
-print(Phone.all)
+
+
+print(Phone.is_integer(2))
+#Phone.instantiate_from_csv()
+# print(Phone.all)
