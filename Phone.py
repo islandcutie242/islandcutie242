@@ -3,14 +3,32 @@ import csv
 class Phone:
     all = []
     def __init__(self, type, model, memory):
+
+
         # validation 
         assert memory >=0, f"Memory {memory} must be greater than 0"
-        self.type = type
+        # __ makes the attribute private (access modifiers)
+        self.__type = type
         self.model = model
         self.memory = memory
 
         #items to execute
         Phone.all.append(self)
+
+    @property
+    # use to create read only attributes (getter)
+    def type(self):
+        # __ makes the attribute private (access modifiers)
+        return self.__type
+
+    @type.setter #setter
+    def type(self, value):
+        # using if statement to limit amount of input
+        if len(value) > 10:
+            raise Exception("The name is too long.")
+        else:
+            self.__type = value
+
 
     def call_numbers(self):
         print(f"{type} is making a call.")
@@ -45,3 +63,7 @@ class Phone:
             return True
         else:
             return False
+    # use to create read only attributes
+    #@property
+    #def read_only_type(self):
+        #return "AAA"
